@@ -91,14 +91,17 @@ const coordsToGraph = (coords, maxDistance) => {
         for(const name_v in coords)
         {
             var coord_v = coords[name_v];
-    
+	
+			// Don't record an edge to and from the same node
             if(name == name_v)
                 continue;
     
             var distance = Math.sqrt(Math.pow((coord_v.x - coord.x), 2) + Math.pow((coord_v.y - coord.y), 2));
-    
+	
+			// Don't record edges which are over the provided distance
             if(distance <= maxDistance)
             {
+				// add edge to the graph
                 graph[name][name_v] = distance;
             }
     
@@ -106,7 +109,29 @@ const coordsToGraph = (coords, maxDistance) => {
     
     }
 
-    return graph;
+	return graph;
+	
+	/* 
+	
+	var coords = {
+		a: {x: 0, y: 0},
+		b: {x: 3, y: 8},
+		c: {x: -4, y: -3},
+		d: {x: 9, y: 5},
+		e: {x: 11, y: 6}
+	};
+
+	
+	Example output graph:
+	var graph = {
+		a: { b: 5, c: 2 },
+		b: { a: 1, c: 4, d: 2 },
+		c: { b: 8, d: 7 },
+		d: { d: 6, e: 3 },
+		e: { f: 1 },
+		f: {}
+	};
+	*/
 
 }
 
@@ -119,15 +144,6 @@ const coordsToShortestPath = (coords, maxDistance, startNode, endNode) =>
 
 	return findShortestPath(graph, startNode, endNode);
 }
-
-// example coords
-var coords = {
-    a: {x: 0, y: 0},
-    b: {x: 3, y: 8},
-    c: {x: -4, y: -3},
-    d: {x: 9, y: 5},
-    e: {x: 11, y: 6}
-};
 
 
 //console.log(coordsToShortestPath(coords, 12, "a", "e"));

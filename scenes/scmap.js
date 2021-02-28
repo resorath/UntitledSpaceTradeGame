@@ -2,15 +2,16 @@ var scmap = new Phaser.Scene('Map');
 
 scmap.preload = function()
 {
-    scmap.load.image('system', 'sprites/system.png');
+    this.load.image('system', 'sprites/system.png');
 };
 
 scmap.pathgraphics = null;
 
 scmap.create = function()
-{
+{  
 
-    systems = this.physics.add.group();
+
+    scmap.systems = this.physics.add.group();
 
     scmap.coords = {
         a: {x: 50, y: 500},
@@ -24,13 +25,28 @@ scmap.create = function()
     {
         var coord = scmap.coords[name];
 
-        systems.create(coord.x, coord.y, 'system');
+        var system = new System(scmap, coord.x, coord.y, name);
+
+        this.add.existing(system);
+
+        scmap.systems.add(system);
 
     }
-
-    scmap.shortest(500);
-
 };
+
+scmap.pickedsystems = [];
+scmap.picksystem = function(system)
+{
+    system.tint = "0xff0000";
+
+    scmap.pickedsystems.push(system);
+
+    if(scmap.pickedsystems.length == 2)
+    {
+        
+        scmap.shortest(500);
+    }
+}
 
 scmap.update = function()
 {  
@@ -38,7 +54,7 @@ scmap.update = function()
 
 scmap.shortest = function(distance) 
 {
-    var route = coordsToShortestPath(scmap.coords, distance, "a", "d");
+    var route = coordsToShortestPath(scmap.coords, distance, scmap.pickedsystems[0].name, scmap.pickedsystems[1].name);
     console.log(route);
     
     if(scmap.pathgraphics != null)
