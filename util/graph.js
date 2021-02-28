@@ -77,6 +77,7 @@ const findShortestPath = (graph, startNode, endNode) => {
 	return results;
 };
 
+// Convert a dictionary of named coordinate pairs to a connected graph constrained by a max distance between the nodes
 const coordsToGraph = (coords, maxDistance) => {
        
     var graph = {}
@@ -109,6 +110,7 @@ const coordsToGraph = (coords, maxDistance) => {
 
 }
 
+// find the shortest path between two nodes from a dictionary of named coordinate pairs constrained by a max distance between the nodes
 const coordsToShortestPath = (coords, maxDistance, startNode, endNode) =>
 {
 	var graph = coordsToGraph(coords, maxDistance);
