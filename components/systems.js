@@ -8,6 +8,7 @@ class System extends Phaser.GameObjects.Sprite {
         this.setInteractive().on('pointerup', this.release);
         
         this.tint = "0x00ff00";
+        this.selected = false;
     }
 
     click(pointer, x, y, event)
@@ -20,6 +21,18 @@ class System extends Phaser.GameObjects.Sprite {
     {
         this.tint = "0x00ff00";
         this.scene.picksystem(this);
+    }
+
+    select()
+    {
+        this.selected = true;
+        this.tint = "0xff0000";
+    }
+
+    unselect()
+    {
+        this.selected = false;
+        this.tint = "0x00ff00";
     }
 
 

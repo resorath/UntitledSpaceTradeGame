@@ -7,11 +7,28 @@ scmap.preload = function()
 
 scmap.pathgraphics = null;
 
+scmap.cnWorld = null;
+scmap.cnGUI = null;
+scmap.systems = [];
+
 scmap.create = function()
 {  
+    scmap.cnWorld = this.add.container(0, 0).setSize(1300, 800);
+    scmap.cnGUI = this.add.container(1300, 0).setSize(300, 800);
 
+    scmap.gui = {}
+    scmap.gui.infobox = new Phaser.GameObjects.Graphics(this, { lineStyle: { width: 5, color: 0xFA8128 }, fillStyle: { color: 0x8D4004} });
+    scmap.gui.infobox.fillRect(0, 200, 298, 598);
+	scmap.gui.infobox.strokeRect(0, 200, 298, 598);
+	scmap.gui.infobox.depth = 100;
+    scmap.cnGUI.add(scmap.gui.infobox);
 
-    scmap.systems = this.physics.add.group();
+    scmap.gui.status = new Phaser.GameObjects.Graphics(this, { lineStyle: { width: 5, color: 0xFA8128 }, fillStyle: { color: 0x8D4004} });
+    scmap.gui.status.fillRect(0, 2, 298, 200);
+	scmap.gui.status.strokeRect(0, 2, 298, 200);
+	scmap.gui.status.depth = 100;
+    scmap.cnGUI.add(scmap.gui.status);
+
 
     scmap.coords = {
         a: {x: 50, y: 500},
@@ -27,24 +44,30 @@ scmap.create = function()
 
         var system = new System(scmap, coord.x, coord.y, name);
 
-        this.add.existing(system);
-
-        scmap.systems.add(system);
+        scmap.systems.push(scmap);
+        scmap.cnWorld.add(system);
 
     }
+
 };
 
 scmap.pickedsystems = [];
 scmap.picksystem = function(system)
 {
-    system.tint = "0xff0000";
+    system.select();
+
+    if(scmap.pickedsystems.length == 2)
+    {
+        scmap.pickedsystems[0].unselect();
+        scmap.pickedsystems[1].unselect();
+        scmap.pickedsystems = [];
+    }
 
     scmap.pickedsystems.push(system);
 
     if(scmap.pickedsystems.length == 2)
     {
-        
-        scmap.shortest(500);
+        scmap.shortest(500, scmap.pickedsystems[0].name, scmap.pickedsystems[1].name);
     }
 }
 
@@ -52,9 +75,9 @@ scmap.update = function()
 {  
 }
 
-scmap.shortest = function(distance) 
+scmap.shortest = function(distance, start, end) 
 {
-    var route = coordsToShortestPath(scmap.coords, distance, scmap.pickedsystems[0].name, scmap.pickedsystems[1].name);
+    var route = coordsToShortestPath(scmap.coords, distance, start, end);
     console.log(route);
     
     if(scmap.pathgraphics != null)
