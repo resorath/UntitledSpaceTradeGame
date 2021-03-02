@@ -9,7 +9,10 @@ class System extends Phaser.GameObjects.Sprite {
         
         this.tint = "0x00ff00";
         this.selected = false;
+
+        this.description = "Put a better description here! This is a really long example description to test word wrapping.";
     }
+
 
     click(pointer, x, y, event)
     {
