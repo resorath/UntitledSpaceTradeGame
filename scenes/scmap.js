@@ -8,26 +8,25 @@ scmap.preload = function()
 scmap.pathgraphics = null;
 
 scmap.cnWorld = null;
-scmap.cnGUI = null;
+scmap.cnStatus = null;
+scmap.cnInfobox = null;
 scmap.systems = [];
 
 scmap.create = function()
 {  
     scmap.cnWorld = this.add.container(0, 0).setSize(1300, 800);
-    scmap.cnGUI = this.add.container(1300, 0).setSize(300, 800);
+    scmap.cnStatus = this.add.container(1300, 0).setSize(300, 200);
+    scmap.cnInfobox = this.add.container(1300, 200).setSize(300, 600);
 
     scmap.gui = {}
-    scmap.gui.infobox = new Phaser.GameObjects.Graphics(this, { lineStyle: { width: 5, color: 0xFA8128 }, fillStyle: { color: 0x8D4004} });
-    scmap.gui.infobox.fillRect(0, 200, 298, 598);
-	scmap.gui.infobox.strokeRect(0, 200, 298, 598);
-	scmap.gui.infobox.depth = 100;
-    scmap.cnGUI.add(scmap.gui.infobox);
+    
+    scmap.gui.infobox = new Infobox(this);
 
     scmap.gui.status = new Phaser.GameObjects.Graphics(this, { lineStyle: { width: 5, color: 0xFA8128 }, fillStyle: { color: 0x8D4004} });
     scmap.gui.status.fillRect(0, 2, 298, 200);
 	scmap.gui.status.strokeRect(0, 2, 298, 200);
 	scmap.gui.status.depth = 100;
-    scmap.cnGUI.add(scmap.gui.status);
+    scmap.cnStatus.add(scmap.gui.status);
 
 
     scmap.coords = {
@@ -54,14 +53,22 @@ scmap.create = function()
 scmap.pickedsystems = [];
 scmap.picksystem = function(system)
 {
-    system.select();
-
     if(scmap.pickedsystems.length == 2)
     {
         scmap.pickedsystems[0].unselect();
         scmap.pickedsystems[1].unselect();
         scmap.pickedsystems = [];
+        scmap.pathgraphics.destroy();
     }
+
+    if(scmap.pickedsystems.length == 1 && scmap.pickedsystems[0].name == system.name)
+    {
+        scmap.pickedsystems[0].unselect();
+        scmap.pickedsystems = [];
+        return;
+    }
+
+    system.select();
 
     scmap.pickedsystems.push(system);
 

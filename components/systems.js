@@ -27,6 +27,7 @@ class System extends Phaser.GameObjects.Sprite {
     {
         this.selected = true;
         this.tint = "0xff0000";
+        this.scene.gui.infobox.showSystem(this);
     }
 
     unselect()
