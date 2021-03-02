@@ -21,6 +21,7 @@ scmap.create = function()
     scmap.gui = {}
     
     scmap.gui.infobox = new Infobox(this);
+    scmap.cnInfobox.depth = 100;
 
     scmap.gui.status = new Phaser.GameObjects.Graphics(this, { lineStyle: { width: 5, color: 0xFA8128 }, fillStyle: { color: 0x8D4004} });
     scmap.gui.status.fillRect(0, 2, 298, 200);

@@ -34,6 +34,7 @@ class System extends Phaser.GameObjects.Sprite {
     {
         this.selected = false;
         this.tint = "0x00ff00";
+        this.scene.gui.infobox.empty();
     }
 
 
